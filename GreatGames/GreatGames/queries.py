@@ -89,7 +89,7 @@ def get_developer_by_pk(pk):
     return developer
 
 
-def get_developer_by_filters(genre=None, title=None, edition=None,
+def get_games_by_filters(genre=None, title=None, edition=None,
                            developer_pk=None, developer_name=None, price=None):
     sql = """
     SELECT * FROM vw_games
@@ -126,7 +126,7 @@ def get_customer_by_pk(pk):
     return customer
 
 
-def get_developer_by_pk(pk):
+def get_game_by_pk(pk):
     sql = """
     SELECT game_pk as pk, * FROM vw_game
     WHERE game_pk = %s
@@ -136,7 +136,7 @@ def get_developer_by_pk(pk):
     return games
 
 
-def get_all_games_by_farmer(pk):
+def get_all_games_by_developer(pk):
     sql = """
     SELECT * FROM vw_game
     WHERE developer_pk = %s
@@ -168,7 +168,7 @@ def get_all_games():
     return games
 
 
-def get_available_produce():
+def get_available_games():
     sql = """
     SELECT * FROM vw_produce
     WHERE available = true

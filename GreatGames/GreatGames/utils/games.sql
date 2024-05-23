@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Games(
 DELETE FROM Games;
 
 CREATE INDEX IF NOT EXISTS games_index
-ON Games (category, title, edition);
+ON Games (genre, title, edition);
 
 DROP TABLE IF EXISTS Sell;
 
@@ -35,7 +35,7 @@ DROP TABLE IF EXISTS GameOrder;
 CREATE TABLE IF NOT EXISTS GameOrder(
     pk serial not null PRIMARY KEY,
     customer_pk int not null REFERENCES Customers(pk) ON DELETE CASCADE,
-    farmer_pk int not null REFERENCES Developers(pk) ON DELETE CASCADE,
+    developer_pk int not null REFERENCES Developers(pk) ON DELETE CASCADE,
     games_pk int not null REFERENCES Games(pk) ON DELETE CASCADE,
     created_at timestamp not null default current_timestamp
 );
@@ -50,6 +50,6 @@ SELECT p.genre, p.title, p.edition,
        f.full_name as developer_name,
        f.pk as farmer_pk
 FROM Games p
-JOIN Sell s ON s.game_pk = p.pk
+JOIN Sell s ON s.games_pk = p.pk
 JOIN Developers f ON s.developer_pk = f.pk
 ORDER BY available, p.pk;

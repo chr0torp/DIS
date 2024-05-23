@@ -21,15 +21,15 @@ if __name__ == '__main__':
         with open('games.sql') as db_file:
             cur.execute(db_file.read())
 
-        # Import all produce from the dataset
+        # Import all games from the dataset
         all_games = list(
             map(lambda x: tuple(x),
-                df[['genre', 'title', 'edition', 'description', 'price']].to_records(index=False))
+                df[['genre', 'title', 'edition', 'description', 'price', 'rating']].to_records(index=False))
         )
-        args_str = ','.join(cur.mogrify("(%s, %s, %s, %s, %s)", i).decode('utf-8') for i in all_games)
-        cur.execute("INSERT INTO Games (genre, title, edition, description, price) VALUES " + args_str)
+        args_str = ','.join(cur.mogrify("(%s, %s, %s, %s, %s, %s)", i).decode('utf-8') for i in all_games)
+        cur.execute("INSERT INTO Games (genre, title, edition, description, price, rating) VALUES " + args_str)
 
-        # Dummy developer 1 sells all produce
+        # Dummy developer 1 sells all games
         dummy_sales = [(1, i) for i in range(1, len(all_games) + 1)]
         args_str = ','.join(cur.mogrify("(%s, %s)", i).decode('utf-8') for i in dummy_sales)
         cur.execute("INSERT INTO Sell (developer_pk, games_pk) VALUES " + args_str)

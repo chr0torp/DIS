@@ -52,7 +52,7 @@ if __name__ == '__main__':
     print(user)
 
 
-class Produce(ModelMixin):
+class Game(ModelMixin):
     def __init__(self, game_data: Dict):
         super(Game, self).__init__(game_data)
         self.pk = game_data.get('pk')
@@ -76,9 +76,9 @@ class Sell(ModelMixin):
 
 
 class GameOrder(ModelMixin):
-    def __init__(self, produce_order_data: Dict):
-        super(GameOrder, self).__init__(produce_order_data)
+    def __init__(self, game_order_data: Dict):
+        super(GameOrder, self).__init__(game_order_data)
         self.pk = game_order_data.get('pk')
-        self.customer_pk = produce_order_data.get('customer_pk')
-        self.developer_pk = produce_order_data.get('developer_pk')
-        self.game_pk = produce_order_data.get('game_pk')
+        self.customer_pk = game_order_data.get('customer_pk')
+        self.developer_pk = game_order_data.get('developer_pk')
+        self.game_pk = game_order_data.get('game_pk')

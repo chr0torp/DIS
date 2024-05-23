@@ -5,8 +5,7 @@ from wtforms.validators import DataRequired, Length, ValidationError, NumberRang
 
 from GreatGames.queries import get_user_by_user_name, get_developer_by_pk, get_customer_by_pk
 from GreatGames.utils.choices import GameTitleChoices, GameGenreChoices, UserTypeChoices, \
-    GameEditionChoices, GameRatingChoices
-
+    GameEditionChoices
 
 class UserLoginForm(FlaskForm):
     user_name = StringField('Username',
@@ -68,18 +67,18 @@ class FilterGamesForm(FlaskForm):
 
 
 class AddGameForm(FlaskForm):
-    category = SelectField('Genre',
+    genre = SelectField('Genre',
                            validators=[DataRequired()],
                            choices=GameGenreChoices.choices())
-    item = SelectField('Title (Subcategory)',
+    title = SelectField('Title (Subcategory)',
                        validators=[DataRequired()],
                        choices=GameTitleChoices.choices())
-    variety = SelectField('Edition',
+    edition = SelectField('Edition',
                           validators=[DataRequired()],
                           choices=GameEditionChoices.choices())
-    unit = SelectField('Rating',
-                       validators=[DataRequired()],
-                       choices=GameRatingChoices.choices())
+    # rating = SelectField('Rating',
+    #                    validators=[DataRequired()],
+    #                    choices=GameRatingChoices.choices())
     price = IntegerField('Price',
                          validators=[DataRequired(), NumberRange(min=0, max=100)])
     developer_pk = IntegerField('Developer',

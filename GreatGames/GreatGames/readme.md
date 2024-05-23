@@ -1,28 +1,33 @@
 # GreatGames
 
-## Installation
+## Installation ★
 (1) Clone the git repository and run requirements.txt to install required packages:
 
-  pip install -r requirements.txt 
+    pip install -r requirements.txt 
 
 (2) Create a new database in pgAdmin 4 named GreatGames. 
 
 (3) In the utils folder, run both users.sql and games.sql with psql. Example:
 
-  psql -h localhost -p 5432 -U postgres -d GreatGames -f users.sql 
+    psql -h localhost -p 5432 -U postgres -d GreatGames -f users.sql 
 
-(4) Remain in the same folder and run init_db.py with python to load the full dataset.
+(4) Configure the .env file with your pgAdmin variables:
 
-(5) Configure the .env file with your pgAdmin variables:
+    SECRET_KEY=<secret_key>
+    DB_USERNAME=postgres || <postgres_user_name>
+    DB_PASSWORD=<postgres_user_password>
+    DB_NAME=GreenGroceries || <postgres_db_name>
 
-  SECRET_KEY=<secret_key>
-  DB_USERNAME=postgres || <postgres_user_name>
-  DB_PASSWORD=<postgres_user_password>
-  DB_NAME=GreenGroceries || <postgres_db_name>
+(5) Remain in the same folder and run init_db.py with python to build the full dataset.
+
 
 (6) Start the project in development mode using
 
-  flask run 
+    flask run 
+
+or (depending on your PATH) with
+
+    py -m flask run
 
 and access the webpage. 
 

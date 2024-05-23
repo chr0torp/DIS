@@ -1,13 +1,13 @@
 # GreatGames
 
 ## Installation
-(1) Clone and download the git repository and run the following requirements file to install required packages:
+(1) Clone the git repository and run requirements.txt to install required packages:
 
   pip install -r requirements.txt 
 
 (2) Create a new database in pgAdmin 4 named GreatGames. 
 
-(3) Open directory utils, then run both users.sql and games.sql with psql. Example:
+(3) In the utils folder, run both users.sql and games.sql with psql. Example:
 
   psql -h localhost -p 5432 -U postgres -d GreatGames -f users.sql 
 

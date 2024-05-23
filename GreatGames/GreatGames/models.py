@@ -41,44 +41,44 @@ class Customer(User):
         super().__init__(user_data)
 
 
-class Farmer(User):
+class Developer(User):
     def __init__(self, user_data: Dict):
         super().__init__(user_data)
 
 
 if __name__ == '__main__':
     user_data = dict(full_name='a', user_name='b', password='c')
-    user = Farmer(user_data)
+    user = Developer(user_data)
     print(user)
 
 
 class Produce(ModelMixin):
-    def __init__(self, produce_data: Dict):
-        super(Produce, self).__init__(produce_data)
-        self.pk = produce_data.get('pk')
-        self.category = produce_data.get('category')
-        self.item = produce_data.get('item')
-        self.unit = produce_data.get('unit')
-        self.variety = produce_data.get('variety')
-        self.price = produce_data.get('price')
+    def __init__(self, game_data: Dict):
+        super(Game, self).__init__(game_data)
+        self.pk = game_data.get('pk')
+        self.genre = game_data.get('genre')
+        self.title = game_data.get('title')
+        self.rating = game_data.get('unit')
+        self.edition = game_data.get('variety')
+        self.price = game_data.get('price')
         # From JOIN w/ Sell relation
-        self.available = produce_data.get('available')
-        self.farmer_name = produce_data.get('farmer_name')
-        self.farmer_pk = produce_data.get('farmer_pk')
+        self.available = game_data.get('available')
+        self.developer_name = game_data.get('developer_name')
+        self.developer_pk = game_data.get('developer_pk')
 
 
 class Sell(ModelMixin):
     def __init__(self, sell_data: Dict):
         super(Sell, self).__init__(sell_data)
         self.available = sell_data.get('available')
-        self.farmer_pk = sell_data.get('farmer_pk')
-        self.produce_pk = sell_data.get('produce_pk')
+        self.developer_pk = sell_data.get('developer_pk')
+        self.game_pk = sell_data.get('game_pk')
 
 
-class ProduceOrder(ModelMixin):
+class GameOrder(ModelMixin):
     def __init__(self, produce_order_data: Dict):
-        super(ProduceOrder, self).__init__(produce_order_data)
-        self.pk = produce_order_data.get('pk')
+        super(GameOrder, self).__init__(produce_order_data)
+        self.pk = game_order_data.get('pk')
         self.customer_pk = produce_order_data.get('customer_pk')
-        self.farmer_pk = produce_order_data.get('farmer_pk')
-        self.produce_pk = produce_order_data.get('produce_pk')
+        self.developer_pk = produce_order_data.get('developer_pk')
+        self.game_pk = produce_order_data.get('game_pk')

@@ -3,11 +3,11 @@ import pandas as pd
 
 # Added system path to be able to run with python.
 import sys
-sys.path.insert(0, r'C:\Users\Lindholm\Dropbox\DIS\Example projects\GreatGames')
+sys.path.insert(0, r'C:\Users\Lindholm\Dropbox\DIS\Project main\DIS\GreatGames')
 
 from GreatGames import app
 
-DATASET_PATH = os.path.join(app.root_path, 'dataset', 'fruitvegprices-2017_2022.csv')
+DATASET_PATH = os.path.join(app.root_path, 'dataset', 'games.csv')
 
 
 def get_label_name(string):
@@ -31,13 +31,13 @@ class ModelChoices:
 
 df = pd.read_csv(DATASET_PATH, sep=',')
 
-ProduceCategoryChoices = ModelChoices(df.category.unique())
-ProduceItemChoices = ModelChoices(df.item.unique())
-ProduceVarietyChoices = ModelChoices(df.variety.unique())
-ProduceUnitChoices = ModelChoices(df.unit.unique())
+GameGenreChoices = ModelChoices(df.genre.unique())
+GameTitleChoices = ModelChoices(df.title.unique())
+GameEditionChoices = ModelChoices(df.edition.unique())
+GameRatingChoices = ModelChoices(df.rating.unique())
 
-UserTypeChoices = ModelChoices(['Farmer', 'Customer'])
+UserTypeChoices = ModelChoices(['Developer', 'Customer'])
 
 if __name__ == '__main__':
     print(df.item.unique())
-    print(ProduceItemChoices.choices())
+    print(GameTitleChoices.choices())

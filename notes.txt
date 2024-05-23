@@ -2,6 +2,6 @@ py -m flask run
 
 Run init_db.py in utils with py. The Flask run needs to be stopped first. 
 
-Do NOT upload my .env file to github.
+Do NOT upload my .env file to github. Add standard .env file.
 
 Sørg for undervisere har adgang til git repository. 

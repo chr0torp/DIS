@@ -3,9 +3,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, FloatField
 from wtforms.validators import DataRequired, Length, ValidationError, NumberRange
 
-from GreatGames.queries import get_user_by_user_name, get_farmer_by_pk, get_customer_by_pk
-from GreatGames.utils.choices import ProduceItemChoices, ProduceCategoryChoices, UserTypeChoices, \
-    ProduceVarietyChoices, ProduceUnitChoices
+from GreatGames.queries import get_user_by_user_name, get_developer_by_pk, get_customer_by_pk
+from GreatGames.utils.choices import GameTitleChoices, GameGenreChoices, UserTypeChoices, \
+    GameEditionChoices, GameRatingChoices
 
 
 class UserLoginForm(FlaskForm):
@@ -53,13 +53,13 @@ class UserSignupForm(FlaskForm):
             raise ValidationError(f'Provided passwords do not match.')
 
 
-class FilterProduceForm(FlaskForm):
-    category = SelectField('Category',
-                           choices=ProduceCategoryChoices.choices())
-    item = SelectField('Item',
-                       choices=ProduceItemChoices.choices())
-    variety = SelectField('Variety',
-                          choices=ProduceVarietyChoices.choices())
+class FilterGamesForm(FlaskForm):
+    genre = SelectField('Genre',
+                           choices=GameGenreChoices.choices())
+    title = SelectField('Title',
+                       choices=GameTitleChoices.choices())
+    variety = SelectField('Edition',
+                          choices=GameEditionChoices.choices())
     sold_by = StringField('Sold by')
     price = FloatField('Price (lower than or equal to)',
                        validators=[NumberRange(min=0, max=100)])
@@ -67,33 +67,33 @@ class FilterProduceForm(FlaskForm):
     submit = SubmitField('Filter')
 
 
-class AddProduceForm(FlaskForm):
-    category = SelectField('Category',
+class AddGameForm(FlaskForm):
+    category = SelectField('Genre',
                            validators=[DataRequired()],
-                           choices=ProduceCategoryChoices.choices())
-    item = SelectField('Item (Subcategory)',
+                           choices=GameGenreChoices.choices())
+    item = SelectField('Title (Subcategory)',
                        validators=[DataRequired()],
-                       choices=ProduceItemChoices.choices())
-    variety = SelectField('Variety',
+                       choices=GameTitleChoices.choices())
+    variety = SelectField('Edition',
                           validators=[DataRequired()],
-                          choices=ProduceVarietyChoices.choices())
-    unit = SelectField('Unit',
+                          choices=GameEditionChoices.choices())
+    unit = SelectField('Rating',
                        validators=[DataRequired()],
-                       choices=ProduceUnitChoices.choices())
+                       choices=GameRatingChoices.choices())
     price = IntegerField('Price',
                          validators=[DataRequired(), NumberRange(min=0, max=100)])
-    farmer_pk = IntegerField('Farmer',
+    developer_pk = IntegerField('Developer',
                              validators=[DataRequired()],
                              render_kw=dict(disabled='disabled'))
-    submit = SubmitField('Add produce')
+    submit = SubmitField('Add game')
 
     def validate_price(self, field):
-        farmer = get_farmer_by_pk(self.farmer_pk.data)
-        if farmer is None:
-            raise ValidationError("You need to be a farmer to sell produce!")
+        developer = get_developer_by_pk(self.developer_pk.data)
+        if developer is None:
+            raise ValidationError("You need to be a developer to sell games!")
 
 
-class BuyProduceForm(FlaskForm):
+class BuyGameForm(FlaskForm):
     submit = SubmitField('Yes, buy it')
 
     def validate_submit(self, field):
@@ -102,5 +102,5 @@ class BuyProduceForm(FlaskForm):
             raise ValidationError("You must be a customer in order to create orders.")
 
 
-class RestockProduceForm(FlaskForm):
+class RestockGamesForm(FlaskForm):
     submit = SubmitField('Yes, restock it')

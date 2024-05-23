@@ -1,5 +1,5 @@
 from GreatGames import db_cursor, conn
-from GreatGames.models import User, Farmer, Customer, Produce, Sell, ProduceOrder
+from GreatGames.models import User, Developer, Customer, Game, Sell, GameOrder
 
 
 # INSERT QUERIES
@@ -12,12 +12,12 @@ def insert_user(user: User):
     conn.commit()
 
 
-def insert_farmer(farmer: Farmer):
+def insert_developer(developer: Developer):
     sql = """
-    INSERT INTO Farmers(user_name, full_name, password)
+    INSERT INTO Developers(user_name, full_name, password)
     VALUES (%s, %s, %s)
     """
-    db_cursor.execute(sql, (farmer.user_name, farmer.full_name, farmer.password))
+    db_cursor.execute(sql, (developer.user_name, developer.full_name, developer.password))
     conn.commit()
 
 
@@ -30,17 +30,17 @@ def insert_customer(customer: Customer):
     conn.commit()
 
 
-def insert_produce(produce: Produce):
+def insert_game(game: Game):
     sql = """
-    INSERT INTO Produce(category, item, unit, variety, price)
+    INSERT INTO Games(genre, title, rating, edition, price)
     VALUES (%s, %s, %s, %s, %s) RETURNING pk
     """
     db_cursor.execute(sql, (
-        produce.category,
-        produce.item,
-        produce.unit,
-        produce.variety,
-        produce.price
+        Game.genre,
+        Game.title,
+        Game.rating,
+        Game.edition,
+        Game.price
     ))
     conn.commit()
     return db_cursor.fetchone().get('pk') if db_cursor.rowcount > 0 else None
@@ -48,21 +48,21 @@ def insert_produce(produce: Produce):
 
 def insert_sell(sell: Sell):
     sql = """
-    INSERT INTO Sell(farmer_pk, produce_pk)
+    INSERT INTO Sell(developer_pk, game_pk)
     VALUES (%s, %s)
     """
-    db_cursor.execute(sql, (sell.farmer_pk, sell.produce_pk,))
+    db_cursor.execute(sql, (sell.developer_pk, sell.game_pk,))
     conn.commit()
 
 
-def insert_produce_order(order: ProduceOrder):
+def insert_game_order(order: GameOrder):
     sql = """
-    INSERT INTO ProduceOrder(produce_pk, farmer_pk, customer_pk)
+    INSERT INTO GameOrder(game_pk, developer_pk, customer_pk)
     VALUES (%s, %s, %s)
     """
     db_cursor.execute(sql, (
-        order.produce_pk,
-        order.farmer_pk,
+        order.game_pk,
+        order.developer_pk,
         order.customer_pk,
     ))
     conn.commit()
@@ -79,41 +79,41 @@ def get_user_by_pk(pk):
     return user
 
 
-def get_farmer_by_pk(pk):
+def get_developer_by_pk(pk):
     sql = """
-    SELECT * FROM Farmers
+    SELECT * FROM Developers
     WHERE pk = %s
     """
     db_cursor.execute(sql, (pk,))
-    farmer = Farmer(db_cursor.fetchone()) if db_cursor.rowcount > 0 else None
-    return farmer
+    developer = Developer(db_cursor.fetchone()) if db_cursor.rowcount > 0 else None
+    return developer
 
 
-def get_produce_by_filters(category=None, item=None, variety=None,
-                           farmer_pk=None, farmer_name=None, price=None):
+def get_developer_by_filters(genre=None, title=None, edition=None,
+                           developer_pk=None, developer_name=None, price=None):
     sql = """
-    SELECT * FROM vw_produce
+    SELECT * FROM vw_games
     WHERE
     """
     conditionals = []
-    if category:
-        conditionals.append(f"category='{category}'")
-    if item:
-        conditionals.append(f"item='{item}'")
-    if variety:
-        conditionals.append(f"variety = '{variety}'")
-    if farmer_pk:
-        conditionals.append(f"farmer_pk = '{farmer_pk}'")
-    if farmer_name:
-        conditionals.append(f"farmer_name LIKE '%{farmer_name}%'")
+    if genre:
+        conditionals.append(f"genre='{genre}'")
+    if title:
+        conditionals.append(f"title='{title}'")
+    if edition:
+        conditionals.append(f"edition = '{edition}'")
+    if developer_pk:
+        conditionals.append(f"developer_pk = '{developer_pk}'")
+    if developer_name:
+        conditionals.append(f"developer_name LIKE '%{developer_name}%'")
     if price:
         conditionals.append(f"price <= {price}")
 
     args_str = ' AND '.join(conditionals)
     order = " ORDER BY price "
     db_cursor.execute(sql + args_str + order)
-    produce = [Produce(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
-    return produce
+    games = [Game(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
+    return games
 
 
 def get_customer_by_pk(pk):
@@ -126,25 +126,25 @@ def get_customer_by_pk(pk):
     return customer
 
 
-def get_produce_by_pk(pk):
+def get_developer_by_pk(pk):
     sql = """
-    SELECT produce_pk as pk, * FROM vw_produce
-    WHERE produce_pk = %s
+    SELECT game_pk as pk, * FROM vw_game
+    WHERE game_pk = %s
     """
     db_cursor.execute(sql, (pk,))
-    produce = Produce(db_cursor.fetchone()) if db_cursor.rowcount > 0 else None
-    return produce
+    games = Game(db_cursor.fetchone()) if db_cursor.rowcount > 0 else None
+    return games
 
 
-def get_all_produce_by_farmer(pk):
+def get_all_games_by_farmer(pk):
     sql = """
-    SELECT * FROM vw_produce
-    WHERE farmer_pk = %s
+    SELECT * FROM vw_game
+    WHERE developer_pk = %s
     ORDER BY available DESC, price
     """
     db_cursor.execute(sql, (pk,))
-    produce = [Produce(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
-    return produce
+    games = [Game(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
+    return games
 
 
 def get_user_by_user_name(user_name):
@@ -157,15 +157,15 @@ def get_user_by_user_name(user_name):
     return user
 
 
-def get_all_produce():
+def get_all_games():
     sql = """
-    SELECT produce_pk as pk, category, item, variety, unit, price, farmer_name, available, farmer_pk
-    FROM vw_produce
+    SELECT game_pk as pk, genre, title, edition, rating, price, developer_name, available, developer_pk
+    FROM vw_games 
     ORDER BY available DESC, price
     """
     db_cursor.execute(sql)
-    produce = [Produce(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
-    return produce
+    games = [Game(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
+    return games
 
 
 def get_available_produce():
@@ -175,28 +175,28 @@ def get_available_produce():
     ORDER BY price  
     """
     db_cursor.execute(sql)
-    produce = [Produce(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
-    return produce
+    games = [Game(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
+    return games
 
 
 def get_orders_by_customer_pk(pk):
     sql = """
-    SELECT * FROM ProduceOrder po
-    JOIN Produce p ON p.pk = po.produce_pk
+    SELECT * FROM GameOrder po
+    JOIN Game p ON p.pk = po.game_pk
     WHERE customer_pk = %s
     """
     db_cursor.execute(sql, (pk,))
-    orders = [ProduceOrder(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
+    orders = [GameOrder(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
     return orders
 
 
 # UPDATE QUERIES
-def update_sell(available, produce_pk, farmer_pk):
+def update_sell(available, game_pk, developer_pk):
     sql = """
     UPDATE Sell
     SET available = %s
-    WHERE produce_pk = %s
-    AND farmer_pk = %s
+    WHERE game_pk = %s
+    AND developer_pk = %s
     """
-    db_cursor.execute(sql, (available, produce_pk, farmer_pk))
+    db_cursor.execute(sql, (available, game_pk, developer_pk))
     conn.commit()

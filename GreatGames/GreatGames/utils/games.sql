@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS Games(
     pk serial unique not null PRIMARY KEY,
     genre varchar(50),
     title varchar(100),
-    edit varchar(30),
+    edition varchar(30),
     description TEXT,
     release DATE,
     price float,
@@ -44,7 +44,7 @@ DELETE FROM GameOrder;
 
 CREATE OR REPLACE VIEW vw_games
 AS
-SELECT p.genre, p.title, p.edit,
+SELECT p.genre, p.title, p.edition,
        p.rating, p.price, s.available,
        p.pk as game_pk,
        f.full_name as developer_name,

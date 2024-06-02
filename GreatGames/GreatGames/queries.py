@@ -92,7 +92,7 @@ def get_developer_by_pk(pk):
 def get_games_by_filters(genre=None, title=None, edition=None,
                            developer_pk=None, developer_name=None, price=None):
     sql = """
-    SELECT * FROM vw_games
+    SELECT * FROM vw_games 
     WHERE
     """
     conditionals = []

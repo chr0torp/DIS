@@ -53,9 +53,9 @@ class UserSignupForm(FlaskForm):
 
 
 class FilterGamesForm(FlaskForm):
-    genre = SelectField('Genre',
+    category = SelectField('Genre',
                            choices=GameGenreChoices.choices())
-    title = SelectField('Title',
+    item = SelectField('Title',
                        choices=GameTitleChoices.choices())
     variety = SelectField('Edition',
                           choices=GameEditionChoices.choices())

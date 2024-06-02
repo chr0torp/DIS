@@ -7,11 +7,11 @@ from GreatGames.queries import insert_game, get_game_by_pk, Sell, \
     insert_sell, get_all_games_by_developer, get_games_by_filters, insert_game_order, update_sell, \
     get_orders_by_customer_pk
 
-Game = Blueprint('Games', __name__)
+Produce = Blueprint('Produce', __name__)
 
 
-@Game.route("/games", methods=['GET', 'POST'])
-def game():
+@Produce.route("/produce", methods=['GET', 'POST'])
+def produce():
     form = FilterGamesForm()
     title = 'Our games!'
     game = []
@@ -22,12 +22,12 @@ def game():
                                          developer_name=request.form.get('sold_by'),
                                          price=request.form.get('price'))
         title = f'Our {request.form.get("genre")}!'
-    return render_template('pages/games.html', game=game, form=form, title=title)
+    return render_template('pages/produce.html', produce=game, form=form, title=title)
 
 
-@Game.route("/add-game", methods=['GET', 'POST'])
+@Produce.route("/add-produce", methods=['GET', 'POST'])
 @login_required
-def add_game():
+def add_produce():
     form = AddGameForm(data=dict(developer_pk=current_user.pk))
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -42,12 +42,12 @@ def add_game():
             new_game_pk = insert_game(game)
             sell = Sell(dict(developer_pk=current_user.pk, game_pk=new_game_pk, available=True))
             insert_sell(sell)
-    return render_template('pages/add-game.html', form=form)
+    return render_template('pages/add-produce.html', form=form)
 
 
-@Game.route("/your-games", methods=['GET', 'POST'])
+@Produce.route("/your-produce", methods=['GET', 'POST'])
 @login_required
-def your_game():
+def your_produce():
     form = FilterGamesForm()
     game = []
     if request.method == 'GET':
@@ -57,12 +57,12 @@ def your_game():
                                          title=request.form.get('title'),
                                          edition=request.form.get('edition'),
                                          developer_pk=current_user.pk)
-    return render_template('pages/your-games.html', form=form, game=game)
+    return render_template('pages/your-produce.html', form=form, produce=game)
 
 
-@Game.route('/games/buy/<pk>', methods=['GET', 'POST'])
+@Produce.route('/produce/buy/<pk>', methods=['GET', 'POST'])
 @login_required
-def buy_game(pk):
+def buy_produce(pk):
     form = BuyGameForm()
     game = get_game_by_pk(pk)
     if request.method == 'POST':
@@ -74,12 +74,12 @@ def buy_game(pk):
             update_sell(available=False,
                         game_pk=game.pk,
                         developer_pk=game.farmer_pk)
-    return render_template('pages/buy-games.html', form=form, game=game)
+    return render_template('pages/buy-produce.html', form=form, produce=game)
 
 
-@Game.route('/game/restock/<pk>', methods=['GET', 'POST'])
+@Produce.route('/produce/restock/<pk>', methods=['GET', 'POST'])
 @login_required
-def restock_game(pk):
+def restock_produce(pk):
     form = RestockGamesForm()
     game = get_game_by_pk(pk)
     if request.method == 'POST':
@@ -87,10 +87,10 @@ def restock_game(pk):
             update_sell(available=True,
                         game_pk=game.pk,
                         farmer_pk=game.developer_pk)
-    return render_template('pages/restock-game.html', form=form, game=game)
+    return render_template('pages/restock-produce.html', form=form, produce=game)
 
 
-@Game.route('/game/your-orders')
+@Produce.route('/produce/your-orders')
 def your_orders():
     orders = get_orders_by_customer_pk(current_user.pk)
     return render_template('pages/your-orders.html', orders=orders)

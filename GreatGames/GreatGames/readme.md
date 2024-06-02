@@ -7,21 +7,20 @@
 
 (2) Create a new database in pgAdmin 4 named GreatGames. 
 
-(3) In the utils folder, run both users.sql and games.sql with psql. Example:
-
-    psql -h localhost -p 5432 -U postgres -d GreatGames -f users.sql 
-
-(4) Configure the .env file with your pgAdmin variables:
+(3) Configure the .env file with your pgAdmin variables:
 
     SECRET_KEY=<secret_key>
     DB_USERNAME=postgres || <postgres_user_name>
     DB_PASSWORD=<postgres_user_password>
     DB_NAME=GreenGroceries || <postgres_db_name>
 
-(5) Remain in the same folder and run init_db.py with python to build the full dataset.
+(4) In the utils folder, run init_db.py to build the database from users.sql and games.sql.
 
+ALTERNATIVE: In the utils folder, run both users.sql and games.sql with psql. Example:
 
-(6) Start the project in development mode using
+    psql -h localhost -p 5432 -U postgres -d GreatGames -f users.sql 
+
+(5) Go to the root folder and start the project in development mode using
 
     flask run 
 

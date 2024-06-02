@@ -56,15 +56,15 @@ class Game(ModelMixin):
     def __init__(self, game_data: Dict):
         super(Game, self).__init__(game_data)
         self.pk = game_data.get('pk')
-        self.genre = game_data.get('genre')
-        self.title = game_data.get('title')
-        self.rating = game_data.get('unit')
-        self.edition = game_data.get('variety')
+        self.category = game_data.get('genre')
+        self.item = game_data.get('title')
+        self.unit = game_data.get('rating')
+        self.variety = game_data.get('edition')
         self.price = game_data.get('price')
         # From JOIN w/ Sell relation
         self.available = game_data.get('available')
-        self.developer_name = game_data.get('developer_name')
-        self.developer_pk = game_data.get('developer_pk')
+        self.farmer_name = game_data.get('developer_name')
+        self.farmer_pk = game_data.get('developer_pk')
 
 
 class Sell(ModelMixin):

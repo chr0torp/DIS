@@ -26,7 +26,7 @@ login_manager.login_message_category = 'info'
 
 from GreatGames import filters
 from GreatGames.blueprints.Login.routes import Login
-from GreatGames.blueprints.Games.routes import Game
+from GreatGames.blueprints.Games.routes import Produce
 
 app.register_blueprint(Login)
-app.register_blueprint(Game)
+app.register_blueprint(Produce)

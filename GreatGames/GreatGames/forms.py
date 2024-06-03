@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, Length, ValidationError, NumberRang
 
 from GreatGames.queries import get_user_by_user_name, get_developer_by_pk, get_customer_by_pk
 from GreatGames.utils.choices import GameTitleChoices, GameGenreChoices, UserTypeChoices, \
-    GameEditionChoices
+    GameEditionChoices, GameDescriptionChoices
 
 class UserLoginForm(FlaskForm):
     user_name = StringField('Username',
@@ -62,7 +62,7 @@ class FilterGamesForm(FlaskForm):
     sold_by = StringField('Sold by')
     price = FloatField('Price (lower than or equal to)',
                        validators=[NumberRange(min=0, max=100)])
-
+    description = StringField('Description')
     submit = SubmitField('Filter')
 
 

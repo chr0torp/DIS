@@ -26,6 +26,7 @@ if __name__ == '__main__':
             map(lambda x: tuple(x),
                 df[['genre', 'title', 'edition', 'description', 'price', 'rating']].to_records(index=False))
         )
+
         args_str = ','.join(cur.mogrify("(%s, %s, %s, %s, %s, %s)", i).decode('utf-8') for i in all_games)
         cur.execute("INSERT INTO Games (genre, title, edition, description, price, rating) VALUES " + args_str)
 

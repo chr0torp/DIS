@@ -36,6 +36,7 @@ GameGenreChoices = ModelChoices(df.genre.unique())
 GameTitleChoices = ModelChoices(df.title.unique())
 GameEditionChoices = ModelChoices(df.edition.unique())
 # GameRatingChoices = ModelChoices(df.rating.unique())
+GameDescriptionChoices = ModelChoices(df.description.unique())
 
 UserTypeChoices = ModelChoices(['Developer', 'Customer'])
 

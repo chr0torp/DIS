@@ -61,6 +61,7 @@ class Game(ModelMixin):
         self.unit = game_data.get('rating')
         self.variety = game_data.get('edition')
         self.price = game_data.get('price')
+        self.description = game_data.get('description')
         # From JOIN w/ Sell relation
         self.available = game_data.get('available')
         self.farmer_name = game_data.get('developer_name')

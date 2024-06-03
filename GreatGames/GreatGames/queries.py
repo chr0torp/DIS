@@ -90,7 +90,8 @@ def get_developer_by_pk(pk):
 
 
 def get_games_by_filters(genre=None, title=None, edition=None,
-                           developer_pk=None, developer_name=None, price=None):
+                           developer_pk=None, developer_name=None, price=None
+                           , description=None):
     sql = """
     SELECT * FROM vw_games 
     WHERE
@@ -108,6 +109,8 @@ def get_games_by_filters(genre=None, title=None, edition=None,
         conditionals.append(f"developer_name LIKE '%{developer_name}%'")
     if price:
         conditionals.append(f"price <= {price}")
+    if description:
+        conditionals.append(f"description LIKE '%{description}%'")
 
     args_str = ' AND '.join(conditionals)
     order = " ORDER BY price "

@@ -63,6 +63,15 @@
             {{ form.submit(class="btn") }}
             <a href="{{ url_for('Produce.produce') }}" class="btn">Clear filters</a>
         </div>
+
+        <div class="form--row">
+            
+            <div class="form-group">
+                {{ form.description.label }} 
+                {{ form.description }}
+            </div>
+        </div>
+
     </form>
 {% endmacro %}
 
@@ -77,6 +86,7 @@
             <p>Item: {{ product.item|format_data }}</p>
             <p>Variety: {{ product.variety|format_data }}</p>
             <p>Price: £{{ product.price }} / {{ product.unit }}</p>
+            <p>Description: {{ product.description }}</p>
             {% if not date %}
                 <p>In stock: {{ product.available }}</p>
                 <p>Sold by: {{ product.farmer_name }}</p>

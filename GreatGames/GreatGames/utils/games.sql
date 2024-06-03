@@ -46,9 +46,10 @@ CREATE OR REPLACE VIEW vw_games
 AS
 SELECT p.genre, p.title, p.edition,
        p.rating, p.price, s.available,
+       p.description,
        p.pk as game_pk,
        f.full_name as developer_name,
-       f.pk as farmer_pk
+       f.pk as developer_pk
 FROM Games p
 JOIN Sell s ON s.games_pk = p.pk
 JOIN Developers f ON s.developer_pk = f.pk

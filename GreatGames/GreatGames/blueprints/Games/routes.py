@@ -20,7 +20,8 @@ def produce():
                                          title=request.form.get('title'),
                                          edition=request.form.get('edition'),
                                          developer_name=request.form.get('sold_by'),
-                                         price=request.form.get('price'))
+                                         price=request.form.get('price'),
+                                         description=request.form.get('description'))
         title = f'Our {request.form.get("genre")}!'
     return render_template('pages/produce.html', produce=game, form=form, title=title)
 
@@ -36,7 +37,8 @@ def add_produce():
                 title=form.title.data,
                 edition=form.edition.data,
                 rating=form.rating.data,
-                price=form.price.data
+                price=form.price.data,
+                # description=form.description.data
             )
             game = GameModel(game_data)
             new_game_pk = insert_game(game)

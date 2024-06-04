@@ -14,7 +14,7 @@
     DB_PASSWORD=<postgres_user_password>
     DB_NAME=GreenGroceries || <postgres_db_name>
 
-(4) In the utils folder, run init_db.py to build the database from users.sql and games.sql.
+(4) In the utils folder, run init_db.py to build the database through users.sql and games.sql.
 
 ALTERNATIVE: In the utils folder, run both users.sql and games.sql with psql. Example:
 
@@ -28,7 +28,17 @@ or (depending on your PATH) with
 
     py -m flask run
 
-and access the webpage. 
+then access the protoype webpage. 
+
+## Guide ★★
+
+# Searching the database 
+
+
+### Logging in and adding games to the database
+- You can login on the website with username "developer" and password "pass".
+
+
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # OLD prototype Readme

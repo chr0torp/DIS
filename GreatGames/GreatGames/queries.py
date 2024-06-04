@@ -110,9 +110,12 @@ def get_games_by_filters(genre=None, title=None, edition=None,
     if price:
         conditionals.append(f"price <= {price}")
     if description:
-        conditionals.append(f"description LIKE '%{description}%'")
+        conditionals.append(f"description ~ '{description}'")
 
     args_str = ' AND '.join(conditionals)
+    if not args_str: 
+        args_str = "1=1"
+
     order = " ORDER BY price "
     db_cursor.execute(sql + args_str + order)
     games = [Game(res) for res in db_cursor.fetchall()] if db_cursor.rowcount > 0 else []
@@ -131,7 +134,7 @@ def get_customer_by_pk(pk):
 
 def get_game_by_pk(pk):
     sql = """
-    SELECT game_pk as pk, * FROM vw_game
+    SELECT game_pk as pk, * FROM vw_games
     WHERE game_pk = %s
     """
     db_cursor.execute(sql, (pk,))
@@ -141,7 +144,7 @@ def get_game_by_pk(pk):
 
 def get_all_games_by_developer(pk):
     sql = """
-    SELECT * FROM vw_game
+    SELECT * FROM vw_games
     WHERE developer_pk = %s
     ORDER BY available DESC, price
     """
@@ -185,7 +188,7 @@ def get_available_games():
 def get_orders_by_customer_pk(pk):
     sql = """
     SELECT * FROM GameOrder po
-    JOIN Game p ON p.pk = po.game_pk
+    JOIN Games p ON p.pk = po.games_pk
     WHERE customer_pk = %s
     """
     db_cursor.execute(sql, (pk,))
@@ -198,7 +201,7 @@ def update_sell(available, game_pk, developer_pk):
     sql = """
     UPDATE Sell
     SET available = %s
-    WHERE game_pk = %s
+    WHERE games_pk = %s
     AND developer_pk = %s
     """
     db_cursor.execute(sql, (available, game_pk, developer_pk))

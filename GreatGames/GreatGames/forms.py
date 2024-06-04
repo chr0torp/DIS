@@ -76,9 +76,8 @@ class AddGameForm(FlaskForm):
     edition = SelectField('Edition',
                           validators=[DataRequired()],
                           choices=GameEditionChoices.choices())
-    # rating = SelectField('Rating',
-    #                    validators=[DataRequired()],
-    #                    choices=GameRatingChoices.choices())
+    rating = IntegerField('Rating',
+                       validators=[DataRequired(), NumberRange(min=0, max=10)])
     price = IntegerField('Price',
                          validators=[DataRequired(), NumberRange(min=0, max=100)])
     developer_pk = IntegerField('Developer',

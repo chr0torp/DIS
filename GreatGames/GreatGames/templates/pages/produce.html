@@ -10,9 +10,9 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Find specific produce</h2>
+    <h2>Find a game</h2>
     <h3 class="text--gray">
-        Try filtering produce by your needs and see what you can find!
+        Search through our universe of the greatest games!
     </h3>
     {{ filter_produce_form(form=form) }}
     <div class="produce">
@@ -22,7 +22,7 @@
             {% endfor %}
         {% else %}
             <h3 class="text--gray">
-                No products found for selected filters
+                No games found for selected filters
             </h3>
         {% endif %}
     </div>

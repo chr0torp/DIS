@@ -6,7 +6,7 @@ Christian Max Torp-Christensen - HNS484
 # GreatGames
 
 ## Installation ★
-(1) Clone the git repository and run requirements.txt to install required packages:
+(1) Clone the git repository and run requirements.txt to install required packages.
 
     pip install -r requirements.txt 
 
@@ -52,31 +52,9 @@ When not searching for age, SQL uses normal Regex pattern matching.
 - You can log in to the website with username "developer" and password "pass".
 - You can create your own customer profile.
 
+## Development comments ★★★
+- Developers cannot add new games, only replicas of existing titles. Games are digital rights and should not have quantity. Developers should be able to add entirely new games.
 
-
-
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# OLD prototype Readme
-# Green Groceries
-
-## Initialization ✔
-
-Clone / download repository files and run the following to install the required packages (preferably within a venv):
-
-    pip install -r requirements.txt
-
-Create a new database in pgAdmin (preferably named GreenGroceries) and add the following to your .env file (normally
-.env should be a private file containing user secrets, in this case we have kept it inside the project files for easy
-access for the TAs):
-
-    SECRET_KEY=<secret_key>
-    DB_USERNAME=postgres || <postgres_user_name>
-    DB_PASSWORD=<postgres_user_password>
-    DB_NAME=GreenGroceries || <postgres_db_name>
-
-When all this information is present (and correct) the server can be started with:
-
-    flask run
 
 ## Folder setup 📁
 
@@ -124,18 +102,4 @@ for the app.
 - This results in some security issues when accessing links ment for farmers as customers and vice-versa (should be
   checked by the validation methods of the forms, but in the perfect scenario specific links should only be accessible
   by specific users)
-- Given the correct url, farmers may be able to update data on other farmers produce (not tested, but seems logical)
-
-All of these issues can be solved with a bit of extra work on the design of the app (specifically how the _current_user_
-is represented by the __User__ interface within __models.py__ such that it also knows whether the logged-in user is a
-farmer or a customer)
-
-## Known frontend issues ☹
-
-- The produce page may be a bit confusing as the filters seem to be preselected. This is not the case as the first load
-  of the produce page simply displays the filtering form which has multiple select fields with options coming from the _
-  choices_ defined above, no empty option was added in this case
-- The app is not the most responsive on mobile devices in most cases (navbar is the issue)
-- Missing confirmation messages on successful form submissions (for example when adding produce) everything works but
-  nothing happens when it does work, so it maybe is a bit confusing.1
-- Missing favicon.ico console error (ignored)
+- Given the correct url, developers may be able to update data on other developers produce (not tested, but seems logical)

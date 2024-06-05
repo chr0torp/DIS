@@ -81,5 +81,5 @@ class GameOrder(ModelMixin):
         super(GameOrder, self).__init__(game_order_data)
         self.pk = game_order_data.get('pk')
         self.customer_pk = game_order_data.get('customer_pk')
-        self.developer_pk = game_order_data.get('developer_pk')
+        self.farmer_pk = game_order_data.get('developer_pk')
         self.game_pk = game_order_data.get('game_pk')

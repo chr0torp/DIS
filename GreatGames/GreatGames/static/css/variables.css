@@ -16,6 +16,8 @@
     --green-dark: #d65b9f;
     --copper-dark: #77542C;
 
+    --dark: #E0E0E0;
+
     --filter-green: invert(47%) sepia(27%) saturate(776%) hue-rotate(77deg) brightness(102%) contrast(88%);
     --filter-white: invert(99%) sepia(78%) saturate(16%) hue-rotate(216deg) brightness(115%) contrast(92%);
 

@@ -5,7 +5,7 @@ from GreatGames.forms import FilterGamesForm, AddGameForm, BuyGameForm, RestockG
 from GreatGames.models import Game as GameModel, GameOrder
 from GreatGames.queries import insert_game, get_game_by_pk, Sell, \
     insert_sell, get_all_games_by_developer, get_games_by_filters, insert_game_order, update_sell, \
-    get_orders_by_customer_pk
+    get_orders_by_customer_pk, get_customer_by_pk 
 
 Produce = Blueprint('Produce', __name__)
 
@@ -16,9 +16,9 @@ def produce():
     title = 'Our games!'
     game = []
     if request.method == 'POST':
-        game = get_games_by_filters(genre=request.form.get('genre'),
-                                         title=request.form.get('title'),
-                                         edition=request.form.get('edition'),
+        game = get_games_by_filters(genre=request.form.get('category'),
+                                         title=request.form.get('item'),
+                                         edition=request.form.get('variety'),
                                          developer_name=request.form.get('sold_by'),
                                          price=request.form.get('price'),
                                          description=request.form.get('description'))
@@ -67,10 +67,11 @@ def your_produce():
 def buy_produce(pk):
     form = BuyGameForm()
     game = get_game_by_pk(pk)
+    # current_user = get_customer_by_pk(current_user.pk)
     if request.method == 'POST':
         if form.validate_on_submit():
             order = GameOrder(dict(game_pk=game.pk,
-                                      developer_pk=game.developer_pk,
+                                      developer_pk=game.farmer_pk,
                                       customer_pk=current_user.pk))
             insert_game_order(order)
             update_sell(available=False,
@@ -88,7 +89,7 @@ def restock_produce(pk):
         if form.validate_on_submit():
             update_sell(available=True,
                         game_pk=game.pk,
-                        farmer_pk=game.developer_pk)
+                        farmer_pk=game.farmer_pk)
     return render_template('pages/restock-produce.html', form=form, produce=game)
 
 

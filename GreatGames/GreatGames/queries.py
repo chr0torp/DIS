@@ -1,6 +1,6 @@
 from GreatGames import db_cursor, conn
 from GreatGames.models import User, Developer, Customer, Game, Sell, GameOrder
-
+import re 
 
 # INSERT QUERIES
 def insert_user(user: User):
@@ -57,7 +57,7 @@ def insert_sell(sell: Sell):
 
 def insert_game_order(order: GameOrder):
     sql = """
-    INSERT INTO GameOrder(game_pk, developer_pk, customer_pk)
+    INSERT INTO GameOrder(games_pk, developer_pk, customer_pk)
     VALUES (%s, %s, %s)
     """
     db_cursor.execute(sql, (
@@ -88,6 +88,17 @@ def get_developer_by_pk(pk):
     developer = Developer(db_cursor.fetchone()) if db_cursor.rowcount > 0 else None
     return developer
 
+# Regex for age restrictions. 
+
+def age_regex(age: str):
+    s = age.strip()
+    p = re.compile(r'(age) (\d+)')
+    res = re.findall(p, s)
+
+    if res: 
+        return f"Age Restriction: {res[0][1]}"
+    else:
+        return False 
 
 def get_games_by_filters(genre=None, title=None, edition=None,
                            developer_pk=None, developer_name=None, price=None
@@ -98,11 +109,11 @@ def get_games_by_filters(genre=None, title=None, edition=None,
     """
     conditionals = []
     if genre:
-        conditionals.append(f"genre='{genre}'")
+        conditionals.append(f"genre ILIKE '%{genre}%'")
     if title:
-        conditionals.append(f"title='{title}'")
+        conditionals.append(f"title LIKE '%{title}%'")
     if edition:
-        conditionals.append(f"edition = '{edition}'")
+        conditionals.append(f"edition LIKE '%{edition}%'")
     if developer_pk:
         conditionals.append(f"developer_pk = '{developer_pk}'")
     if developer_name:
@@ -110,8 +121,12 @@ def get_games_by_filters(genre=None, title=None, edition=None,
     if price:
         conditionals.append(f"price <= {price}")
     if description:
-        conditionals.append(f"description ~ '{description}'")
-
+        age = age_regex(description)
+        if age: 
+            conditionals.append(f"description LIKE '%{age}%'")
+        else: 
+            conditionals.append(f"description ~ '{description}'")
+    print(conditionals)
     args_str = ' AND '.join(conditionals)
     if not args_str: 
         args_str = "1=1"
